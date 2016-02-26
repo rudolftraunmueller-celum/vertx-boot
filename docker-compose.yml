@@ -1,0 +1,14 @@
+vertx-cluster:
+  hostname: cluster
+  image: vertx/vertx3-exec
+  command: bare
+vertx-inst1:
+  build: ./inst1
+  hostname: inst1
+  links:
+    - vertx-cluster:cluster
+vertx-inst2:
+  build: ./inst2
+  hostname: inst2
+  links:
+    - vertx-cluster:cluster

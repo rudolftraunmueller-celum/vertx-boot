@@ -1,0 +1,4 @@
+# Spring Properties
+spring:
+  application:
+     name: vertx-boot
