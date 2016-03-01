@@ -2,11 +2,12 @@ package io.vertx.sample.hello;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import javax.annotation.PostConstruct;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * @author rtm
@@ -21,7 +22,12 @@ public class App {
   }
 
   @PostConstruct
-  public void deployVerticle() {
-    Vertx.clusteredVertx(new VertxOptions(), vertxAsyncResult -> vertxAsyncResult.result().deployVerticle(new HelloVerticle()));
+  public void deployVerticle() throws UnknownHostException {
+    String dockerIp = InetAddress.getByName("vertx").getHostAddress();
+
+    VertxOptions options = new VertxOptions();
+    options.setClusterHost(dockerIp);
+
+    Vertx.clusteredVertx(options, vertxAsyncResult -> vertxAsyncResult.result().deployVerticle(new HelloVerticle()));
   }
 }
